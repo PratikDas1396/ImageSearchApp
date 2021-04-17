@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">ImageSearchApp</string>
+    <string name="action_settings">Setting</string>
+    <string name="search_hint">Search Here</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_setting">Setting</string>
+    <string name="action_labels">Label</string>
+    <string name="action_images">Images</string>
+    <string name="action_mapping">ImageLabelMapping</string>
+    <string name="title_activity_label">LabelActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+
+    <string name="all_permission_text">Please grant requested permission for better use of app</string>
+    <string name="read_storage_permission_text">Please grant requested permission.</string>
+    <string name="write_storage_permission_text">Please grant requested permission.</string>
+</resources>

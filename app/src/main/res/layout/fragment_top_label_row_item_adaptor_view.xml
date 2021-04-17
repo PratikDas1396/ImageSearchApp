@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_item_image_view"
+        android:scaleType="centerCrop"
+        android:maxWidth="300dp"
+        android:maxHeight="300dp"
+        android:background="@color/teal_700"
+        tools:ignore="MissingConstraints">
+    </ImageView>
+
+</RelativeLayout>
