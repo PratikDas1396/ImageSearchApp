@@ -3,12 +3,17 @@ package com.imagesearch.app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
+
+import com.imagesearch.app.CommonClass.AppPermission;
+import com.imagesearch.app.CommonClass.CustomDialog;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -22,33 +27,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (AppPermission.checkAppPermissionsGranted(this)) {
             runMainApp();
         } else {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, R.string.all_permission_text, Toast.LENGTH_LONG).show();
+            if (AppPermission.shouldShowRequestPermissionRationale(this)) {
+                Dialog dialog = CustomDialog.getAllPermissionDialog(this);
+                Button btnOk = (Button) dialog.findViewById(R.id.btnGrantPermission);
+                btnOk.setOnClickListener(v -> {
+                    dialog.dismiss();
+                    AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
+                });
+                dialog.show();
             }
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_FILE_PERMISSION_CODE);
+            else{
+                AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
+            }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case READ_FILE_PERMISSION_CODE: {
-                if (grantResults.length > 0) {
-                    if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, R.string.read_storage_permission_text, Toast.LENGTH_LONG).show();
-                    }
-                    if (grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, R.string.read_storage_permission_text, Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(this, R.string.all_permission_text, Toast.LENGTH_LONG).show();
-                }
-                break;
-            }
-        }
         runMainApp();
     }
 

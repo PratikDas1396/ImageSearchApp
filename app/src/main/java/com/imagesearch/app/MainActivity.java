@@ -7,19 +7,20 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.imagesearch.app.CommonClass.ImageFileFilter;
 import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.Images;
-import com.imagesearch.app.database.Models.Label;
 import com.imagesearch.app.database.Repository.ImagesRepository;
-
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

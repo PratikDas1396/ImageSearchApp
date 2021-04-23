@@ -49,18 +49,19 @@ public class TopLabelViewAdaptor extends RecyclerView.Adapter<TopLabelViewAdapto
         try {
             //SearchItemAnimation.animateFadeIn(holder.itemView, position);
             holder.getLabelView().setText(image_data.getLabelName());
-//            holder.getButtonView().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
+            holder.getButtonView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
 //                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
 //                    Fragment searchFragment = new SearchFragment();
 //                    activity.getSupportFragmentManager()
 //                            .beginTransaction()
-//                            .replace(R.id.navigation_search, searchFragment)
+//                            .replace(R.id.nav_host_fragment, searchFragment)
 //                            .addToBackStack(null)
 //                            .commit();
-//                }
-//            });
+                }
+            });
             setChildRecycleView(holder.getRecyclerView(), image_data.getImages());
         } catch (Exception ex) {
             ex.printStackTrace();

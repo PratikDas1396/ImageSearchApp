@@ -53,10 +53,6 @@ public class SearchFragment extends Fragment {
         context = getActivity().getApplicationContext();
         View root = inflater.inflate(R.layout.fragment_search, container, false);
 
-        if (context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE }, 0x30);
-        }
-
         DatabaseInitializer db = new DatabaseInitializer(context);
         ImageRepo = new ImagesRepository(db);
         items = ImageRepo.GetImages();
@@ -81,23 +77,10 @@ public class SearchFragment extends Fragment {
 
             }
         });
-
         RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(this.numberOfColums, StaggeredGridLayoutManager.VERTICAL);
-
         searchRecycleView.setLayoutManager(layoutManager);
         searchViewAdaptor = new SearchViewAdaptor(context, items);
         searchRecycleView.setAdapter(searchViewAdaptor);
-
-//        private SearchViewModel searchViewModel;
-//        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-//        final TextView textView = root.findViewById(R.id.text_search);
-//        searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
         return root;
     }
 
