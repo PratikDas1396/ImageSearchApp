@@ -41,6 +41,7 @@ public class ImageLableMappingRepository {
         cv.put(ImageLabelMappingTable.ImageId, mapping.getImageId());
         cv.put(ImageLabelMappingTable.ImageName, mapping.getImageName());
         cv.put(ImageLabelMappingTable.FullPath, mapping.getFullPath());
+        cv.put(ImageLabelMappingTable.UriPath, mapping.getUriPath());
 
         if(mapping.getCreatedDtim() != null)
             cv.put(ImageLabelMappingTable.CreatedDtim, mapping.getCreatedDtim().toString());
@@ -58,6 +59,7 @@ public class ImageLableMappingRepository {
         cv.put(ImageLabelMappingTable.ImageId, mapping.getImageId());
         cv.put(ImageLabelMappingTable.ImageName, mapping.getImageName());
         cv.put(ImageLabelMappingTable.FullPath, mapping.getFullPath());
+        cv.put(ImageLabelMappingTable.UriPath, mapping.getUriPath());
 
         if(mapping.getCreatedDtim() != null)
             cv.put(ImageLabelMappingTable.CreatedDtim, mapping.getCreatedDtim().toString());
@@ -82,6 +84,8 @@ public class ImageLableMappingRepository {
                 + ", img." + ImageTable.FileSize
                 + ", img." + ImageTable.Extension
                 + ", img." + ImageTable.ImageCreationDate
+                + ", img." + ImageTable.UriPath
+                + ", img." + ImageTable.isDetectionDone
                 + " from " + ImageLabelMappingTable.TableName + " map "
                 + "inner join " + ImageTable.TableName
                 + " img on map. " + ImageLabelMappingTable.ImageId + " = img." + ImageTable.Id
@@ -104,7 +108,9 @@ public class ImageLableMappingRepository {
         data.setName(cursor.getString(4));
         data.setFullPath(cursor.getString(5));
         data.setFileSize(cursor.getLong(6));
-        data.setExtension(cursor.getString(5));
+        data.setExtension(cursor.getString(7));
+        data.setUriPath(cursor.getString(9));
+        data.setIsDetectionDone(cursor.getInt(10));
         data.setLabels(labels);
 
         cursor.close();
@@ -125,6 +131,8 @@ public class ImageLableMappingRepository {
                 + ", img." + ImageTable.FileSize
                 + ", img." + ImageTable.Extension
                 + ", img." + ImageTable.ImageCreationDate
+                + ", img." + ImageTable.UriPath
+                + ", img." + ImageTable.isDetectionDone
                 + " from " + ImageLabelMappingTable.TableName + " map "
                 + "inner join " + ImageTable.TableName
                 + " img on map. " + ImageLabelMappingTable.ImageId + " = img." + ImageTable.Id
@@ -141,7 +149,9 @@ public class ImageLableMappingRepository {
                 img.setName(cursor.getString(4));
                 img.setFullPath(cursor.getString(5));
                 img.setFileSize(cursor.getLong(6));
-                img.setExtension(cursor.getString(5));
+                img.setExtension(cursor.getString(7));
+                img.setUriPath(cursor.getString(9));
+                img.setIsDetectionDone(cursor.getInt(10));
                 images.add(img);
             }
             while (cursor.moveToNext());
@@ -202,6 +212,7 @@ public class ImageLableMappingRepository {
                 i.setImageId(cursor.getInt(3));
                 i.setImageName(cursor.getString(4));
                 i.setFullPath(cursor.getString(5));
+                i.setUriPath((cursor.getString(6)));
                 imageNames.add(i);
             }
             while (cursor.moveToNext());

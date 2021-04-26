@@ -31,8 +31,9 @@ public class ImagesRepository {
         cv.put(ImageTable.Name, images.getName());
         cv.put(ImageTable.Extension, images.getExtension());
         cv.put(ImageTable.FileSize, images.getFileSize());
-        cv.put(ImageTable.Path, images.getPath());
+        cv.put(ImageTable.UriPath, images.getUriPath());
         cv.put(ImageTable.FullPath, images.getFullPath());
+        cv.put(ImageTable.isDetectionDone, images.getIsDetectionDone());
         cv.put(ImageTable.ImageCreationDate, images.getImageCreationDate().toString());
 
         if(images.getCreatedDtim() != null)
@@ -49,9 +50,11 @@ public class ImagesRepository {
         cv.put(ImageTable.Name, images.getName());
         cv.put(ImageTable.Extension, images.getExtension());
         cv.put(ImageTable.FileSize, images.getFileSize());
-        cv.put(ImageTable.Path, images.getPath());
+        cv.put(ImageTable.UriPath, images.getUriPath());
         cv.put(ImageTable.FullPath, images.getFullPath());
         cv.put(ImageTable.ImageCreationDate, images.getImageCreationDate().toString());
+        cv.put(ImageTable.isDetectionDone, images.getIsDetectionDone());
+
         if(images.getCreatedDtim() != null)
             cv.put(ImageTable.CreatedDtim, images.getCreatedDtim().toString());
 
@@ -88,8 +91,9 @@ public class ImagesRepository {
                 i.setName(cursor.getString(1));
                 i.setExtension(cursor.getString(2));
                 i.setFileSize(cursor.getLong(3));
-                i.setPath(cursor.getString(4));
+                i.setUriPath(cursor.getString(4));
                 i.setFullPath(cursor.getString(5));
+                i.setIsDetectionDone(cursor.getInt(7));
                 imageNames.add(i);
             }
             while (cursor.moveToNext());

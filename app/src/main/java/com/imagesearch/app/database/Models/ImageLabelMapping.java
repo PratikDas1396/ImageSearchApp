@@ -9,6 +9,7 @@ public class ImageLabelMapping {
     public long ImageId;
     public String ImageName;
     public String FullPath;
+    public String UriPath;
     public Date CreatedDtim;
     public Date UpdatedDtim;
 
@@ -60,6 +61,14 @@ public class ImageLabelMapping {
         FullPath = fullPath;
     }
 
+    public String getUriPath() {
+        return UriPath;
+    }
+
+    public void setUriPath(String uriPath) {
+        UriPath = uriPath;
+    }
+
     public Date getCreatedDtim() {
         return CreatedDtim;
     }
@@ -85,8 +94,10 @@ public class ImageLabelMapping {
                 ", ImageId=" + ImageId +
                 ", ImageName='" + ImageName + '\'' +
                 ", FullPath='" + FullPath + '\'' +
+                ", UriPath =" + UriPath +
                 ", CreatedDtim=" + CreatedDtim +
                 ", UpdatedDtim=" + UpdatedDtim +
                 '}';
     }
+
 }
