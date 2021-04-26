@@ -13,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageSearchApp">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr, face" />
+
+
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/title_activity_splash_screen">

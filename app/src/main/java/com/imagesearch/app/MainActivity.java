@@ -7,20 +7,21 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.imagesearch.app.AsyncTask.AppStartupAsyncTask;
+import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.CommonClass.ImageFileFilter;
 import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.Images;
 import com.imagesearch.app.database.Repository.ImagesRepository;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     List<String> items = new ArrayList<String>();
     ImagesRepository ImageRepo;
     DatabaseInitializer db;
+    //MKLoader loader;
+
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,14 @@ public class MainActivity extends AppCompatActivity {
             //Set Bottom Navigation Bar
             setNavigationMenu();
 
+            loadingDialog = CustomDialog.getLoadingDialog(this);
+
             db = new DatabaseInitializer(MainActivity.this);
+
+            AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(this, loadingDialog, db);
+            backgroundTask.run();
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -56,12 +67,11 @@ public class MainActivity extends AppCompatActivity {
         for (File file : files) {
             if (file.isDirectory() && file.listFiles(new ImageFileFilter()).length > 0) {
                 GetImageDirectories(file.getAbsolutePath());
-            }
-            else {
+            } else {
                 Images img = new Images();
                 img.setName(file.getName());
                 img.setExtension(FilenameUtils.getExtension(file.getName()));
-                img.setPath(file.getAbsolutePath());
+                img.setUriPath(file.getAbsolutePath());
                 img.setFullPath(file.getAbsolutePath());
                 img.setFileSize(file.length());
                 ImageRepo.Add(img);
@@ -80,24 +90,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_Labels:
-            {
+            case R.id.action_Labels: {
                 Toast.makeText(this, "this is action label", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, LabelActivity.class);
                 intent.putExtra("Value", "Label");
                 startActivity(intent);
                 break;
             }
-            case R.id.action_Images:
-            {
+            case R.id.action_Images: {
                 Toast.makeText(this, "this is action image", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, LabelActivity.class);
                 intent.putExtra("Value", "Image");
                 startActivity(intent);
                 break;
             }
-            case R.id.action_mapping:
-            {
+            case R.id.action_mapping: {
                 Toast.makeText(this, "this is action mapping", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, LabelActivity.class);
                 intent.putExtra("Value", "Mapping");

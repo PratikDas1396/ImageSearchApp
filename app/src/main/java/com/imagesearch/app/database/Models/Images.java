@@ -2,12 +2,14 @@ package com.imagesearch.app.database.Models;
 
 import java.util.Date;
 
+
 public class Images {
     private long Id;
     private String Name;
     private String Extension;
     private long FileSize;
-    private String Path;
+    private int isDetectionDone;
+    private String UriPath;
     private String FullPath;
     private Date ImageCreationDate;
     private Date CreatedDtim;
@@ -45,12 +47,12 @@ public class Images {
         this.FileSize = fileSize;
     }
 
-    public String getPath() {
-        return this.Path;
+    public String getUriPath() {
+        return this.UriPath;
     }
 
-    public void setPath(String path) {
-        this.Path = path;
+    public void setUriPath(String uriPath) {
+        this.UriPath = uriPath;
     }
 
     public String getFullPath() {
@@ -85,6 +87,14 @@ public class Images {
         this.ImageCreationDate = imageCreationDate;
     }
 
+    public int getIsDetectionDone() {
+        return isDetectionDone;
+    }
+
+    public void setIsDetectionDone(int isDetectionDone) {
+        this.isDetectionDone = isDetectionDone;
+    }
+
     @Override
     public String toString() {
         return "Images{" +
@@ -92,11 +102,13 @@ public class Images {
                 ", Name='" + Name + '\'' +
                 ", Extension='" + Extension + '\'' +
                 ", FileSize=" + FileSize +
-                ", Path='" + Path + '\'' +
+                ", UriPath='" + UriPath + '\'' +
                 ", FullPath='" + FullPath + '\'' +
                 ", ImageCreationDate=" + ImageCreationDate +
+                ", isDetectionDone=" + isDetectionDone +
                 ", CreatedDtim=" + CreatedDtim +
                 ", UpdatedDtim=" + UpdatedDtim +
                 '}';
     }
+
 }

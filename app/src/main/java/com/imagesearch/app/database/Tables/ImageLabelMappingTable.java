@@ -12,19 +12,21 @@ public class ImageLabelMappingTable {
     public static final String ImageId = "ImageId";
     public static final String ImageName = "ImageName";
     public static final String FullPath = "FullPath";
+    public static final String UriPath = "UriPath";
     public static final String CreatedDtim = "CreatedDtim";
     public static final String UpdatedDtim = "UpdatedDtim";
 
-    public ImageLabelMappingTable(SQLiteDatabase db){
+    public ImageLabelMappingTable(SQLiteDatabase db) {
         String Sql = "create table " + TableName + " ( "
                 + Id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + LabelID +  " INTEGER, "
-                + LabelName +  " Text, "
-                + ImageId +  " INTEGER, "
-                + ImageName +  " Text, "
-                + FullPath +  " Text, "
-                + CreatedDtim +  " Text, "
-                + UpdatedDtim +  " Text "
+                + LabelID + " INTEGER, "
+                + LabelName + " Text, "
+                + ImageId + " INTEGER, "
+                + ImageName + " Text, "
+                + FullPath + " Text, "
+                + UriPath + " Text, "
+                + CreatedDtim + " Text, "
+                + UpdatedDtim + " Text "
                 + ")";
 
         db.execSQL(Sql);

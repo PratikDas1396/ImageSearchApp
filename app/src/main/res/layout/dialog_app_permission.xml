@@ -9,8 +9,8 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
-        android:outlineAmbientShadowColor="@color/black"
         android:orientation="vertical"
+        android:outlineAmbientShadowColor="@color/black"
         android:padding="10dp">
 
         <TextView
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Information"
             android:fontFamily="@font/roboto"
+            android:text="Information"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="25sp"
@@ -27,9 +27,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height= "0.5dp"
+            android:layout_height="0.5dp"
             android:layout_marginTop="10dp"
-            android:background="@color/grey"/>
+            android:background="@color/grey" />
 
         <TextView
             android:id="@+id/textInfo"
@@ -49,9 +49,9 @@
             android:id="@+id/btnGrantPermission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
             android:fontFamily="@font/roboto"
             android:text="Grant Permission" />
 

@@ -9,6 +9,8 @@ public class ImageLabelDataModel {
     private String Extension;
     private long FileSize;
     private String FullPath;
+    private String UriPath;
+    private int isDetectionDone;
     private Date ImageCreationDate;
     private List<Label> labels;
 
@@ -59,11 +61,28 @@ public class ImageLabelDataModel {
     public void setImageCreationDate(Date imageCreationDate) {
         ImageCreationDate = imageCreationDate;
     }
+
     public List<Label> getLabels() {
         return labels;
     }
 
     public void setLabels(List<Label> labels) {
         this.labels = labels;
+    }
+
+    public String getUriPath() {
+        return UriPath;
+    }
+
+    public void setUriPath(String uriPath) {
+        UriPath = uriPath;
+    }
+
+    public int getIsDetectionDone() {
+        return isDetectionDone;
+    }
+
+    public void setIsDetectionDone(int isDetectionDone) {
+        this.isDetectionDone = isDetectionDone;
     }
 }

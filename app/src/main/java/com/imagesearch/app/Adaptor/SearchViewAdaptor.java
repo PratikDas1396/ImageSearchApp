@@ -46,8 +46,6 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         Images img = this.filteredDataList.get(position);
         try {
-            //SearchItemAnimation.animateFadeIn(holder.itemView, position);
-
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(context)
                     .load(img.getFullPath())
@@ -68,28 +66,22 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
         return this.filteredDataList.size();
     }
 
-    public Filter getSearchFilter(){
+    public Filter getSearchFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String Key = charSequence.toString();
-                if(Key.isEmpty()){
+                if (Key.isEmpty()) {
                     filteredDataList = DataSet;
-                }
-                else{
+                } else {
 
                     List<Images> lstFiltered = new ArrayList<Images>();
-                    if(Key.length() >= 3){
+                    if (Key.length() >= 3) {
 
                         DataSet.stream().filter(file -> file.getName().toLowerCase()
-                                        .contains(Key.toLowerCase()))
-                                        .forEach(filtered -> lstFiltered.add(filtered));
+                                .contains(Key.toLowerCase()))
+                                .forEach(filtered -> lstFiltered.add(filtered));
 
-//                        for(Images row: DataSet){
-//                            if(row.getName().toLowerCase().contains(Key.toLowerCase())){
-//                                lstFiltered.add(row);
-//                            }
-//                        }
                         filteredDataList = lstFiltered;
                     }
                 }
@@ -101,11 +93,10 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredDataList = (List<Images>)filterResults.values;
+                filteredDataList = (List<Images>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
-
     }
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder {
