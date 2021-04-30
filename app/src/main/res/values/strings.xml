@@ -17,4 +17,6 @@
     values-round/strings.xml for round devices.
     -->
     <string name="all_permission_text">Please grant requested permission for better use of app</string>
+    <string name="run_background_task">please run job</string>
+
 </resources>

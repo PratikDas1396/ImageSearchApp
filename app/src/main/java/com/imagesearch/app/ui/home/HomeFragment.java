@@ -20,7 +20,6 @@ import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
-import com.imagesearch.app.database.Repository.ImageLableMappingRepository;
 import com.imagesearch.app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class HomeFragment extends Fragment {
     public RecyclerView topLabelRecycleView;
     public TopLabelViewAdaptor adaptor;
     List<LabelImageDataModel> items = new ArrayList<LabelImageDataModel>();
-    private ImageLableMappingRepository ImageRepo;
+    //private ImageLableMappingRepository ImageRepo;
     FragmentHomeBinding binding;
     DatabaseInitializer db;
 
@@ -42,7 +41,6 @@ public class HomeFragment extends Fragment {
         activity = getActivity();
         context = activity.getApplicationContext();
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        db = new DatabaseInitializer(context);
 
         topLabelRecycleView = root.findViewById(R.id.topLableRecycleView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
@@ -87,10 +85,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void appStart() {
-        ImageRepo = new ImageLableMappingRepository(db);
-        items = ImageRepo.GetTrendingLabels();
-        adaptor = new TopLabelViewAdaptor(context, items);
-        topLabelRecycleView.setAdapter(adaptor);
+//        ImageRepo = new ImageLableMappingRepository(db);
+//        items = ImageRepo.GetTrendingLabels();
+//        adaptor = new TopLabelViewAdaptor(context, items);
+//        topLabelRecycleView.setAdapter(adaptor);
     }
 
     private void showDialog() {

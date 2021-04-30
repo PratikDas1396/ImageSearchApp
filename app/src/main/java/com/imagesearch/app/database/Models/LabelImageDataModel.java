@@ -30,6 +30,4 @@ public class LabelImageDataModel {
     public void setImages(List<Images> images) {
         this.images = images;
     }
-
-
 }

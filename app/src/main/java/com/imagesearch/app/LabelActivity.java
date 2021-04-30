@@ -10,7 +10,6 @@ import com.imagesearch.app.Adaptor.ImageAdaptor;
 import com.imagesearch.app.Adaptor.ImageLabelMappingAdaptor;
 import com.imagesearch.app.Adaptor.LabelAdaptor;
 import com.imagesearch.app.database.DatabaseInitializer;
-import com.imagesearch.app.database.Repository.ImageLableMappingRepository;
 import com.imagesearch.app.database.Repository.ImagesRepository;
 import com.imagesearch.app.database.Repository.LabelRepository;
 
@@ -37,39 +36,39 @@ public class LabelActivity extends AppCompatActivity {
             return;
         }
         else{
-            onActivityStart();
+            //onActivityStart();
         }
     }
 
-    public void onActivityStart()  {
-        DatabaseInitializer db = new DatabaseInitializer(this);
-        String Value = getIntent().getStringExtra("Value");
-        switch (Value) {
-            case "Label": {
-                LabelRepository labelRepository = new LabelRepository(db);
-                LabelAdaptor labelAdaptor = new LabelAdaptor(this, labelRepository.GetLabels());
-                ListView labelListView = (ListView) findViewById(R.id.labelListView);
-                labelListView.setAdapter(labelAdaptor);
-                break;
-            }
-            case "Image": {
-                ImagesRepository imagesRepository = new ImagesRepository(db);
-                ImageAdaptor imageAdaptor = new ImageAdaptor(this, imagesRepository.GetImages());
-                ListView labelListView = (ListView) findViewById(R.id.labelListView);
-                labelListView.setAdapter(imageAdaptor);
-                break;
-            }
-            case "Mapping": {
-                ImageLableMappingRepository imageLableMappingRepository = new ImageLableMappingRepository(db);
-                ImageLabelMappingAdaptor imageAdaptor = new ImageLabelMappingAdaptor(this, imageLableMappingRepository.GetMapping());
-                ListView labelListView = (ListView) findViewById(R.id.labelListView);
-                labelListView.setAdapter(imageAdaptor);
-                break;
-            }
-            default: {
-            }
-        }
-    }
+//    public void onActivityStart()  {
+//        DatabaseInitializer db = new DatabaseInitializer(this);
+//        String Value = getIntent().getStringExtra("Value");
+//        switch (Value) {
+//            case "Label": {
+//                LabelRepository labelRepository = new LabelRepository(db);
+//                LabelAdaptor labelAdaptor = new LabelAdaptor(this, labelRepository.GetLabels());
+//                ListView labelListView = (ListView) findViewById(R.id.labelListView);
+//                labelListView.setAdapter(labelAdaptor);
+//                break;
+//            }
+//            case "Image": {
+//                ImagesRepository imagesRepository = new ImagesRepository(db);
+//                ImageAdaptor imageAdaptor = new ImageAdaptor(this, imagesRepository.GetImages());
+//                ListView labelListView = (ListView) findViewById(R.id.labelListView);
+//                labelListView.setAdapter(imageAdaptor);
+//                break;
+//            }
+//            case "Mapping": {
+//                ImageLableMappingRepository imageLableMappingRepository = new ImageLableMappingRepository(db);
+//                ImageLabelMappingAdaptor imageAdaptor = new ImageLabelMappingAdaptor(this, imageLableMappingRepository.GetMapping());
+//                ListView labelListView = (ListView) findViewById(R.id.labelListView);
+//                labelListView.setAdapter(imageAdaptor);
+//                break;
+//            }
+//            default: {
+//            }
+//        }
+//    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
@@ -77,7 +76,7 @@ public class LabelActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onActivityStart();
+                    //onActivityStart();
                 } else {
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.

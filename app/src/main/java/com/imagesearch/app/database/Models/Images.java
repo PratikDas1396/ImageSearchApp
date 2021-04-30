@@ -2,9 +2,15 @@ package com.imagesearch.app.database.Models;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Images {
-    private long Id;
+
+public class Images extends RealmObject {
+
+    @PrimaryKey
+    private int Id;
+
     private String Name;
     private String Extension;
     private long FileSize;
@@ -12,14 +18,12 @@ public class Images {
     private String UriPath;
     private String FullPath;
     private Date ImageCreationDate;
-    private Date CreatedDtim;
-    private Date UpdatedDtim;
 
-    public long getId() {
+    public int getId() {
         return this.Id;
     }
 
-    public void setId(long Id) {
+    public void setId(int Id) {
         this.Id = Id;
     }
 
@@ -63,22 +67,6 @@ public class Images {
         this.FullPath = fullPath;
     }
 
-    public Date getCreatedDtim() {
-        return this.CreatedDtim;
-    }
-
-    public void setCreatedDtim(Date createdDtim) {
-        this.CreatedDtim = createdDtim;
-    }
-
-    public Date getUpdatedDtim() {
-        return this.UpdatedDtim;
-    }
-
-    public void setUpdatedDtim(Date updatedDtim) {
-        this.UpdatedDtim = updatedDtim;
-    }
-
     public Date getImageCreationDate() {
         return ImageCreationDate;
     }
@@ -106,8 +94,6 @@ public class Images {
                 ", FullPath='" + FullPath + '\'' +
                 ", ImageCreationDate=" + ImageCreationDate +
                 ", isDetectionDone=" + isDetectionDone +
-                ", CreatedDtim=" + CreatedDtim +
-                ", UpdatedDtim=" + UpdatedDtim +
                 '}';
     }
 

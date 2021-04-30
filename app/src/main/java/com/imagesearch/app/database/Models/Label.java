@@ -1,15 +1,20 @@
 package com.imagesearch.app.database.Models;
 
-public class Label {
-    private long ID;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Label extends RealmObject {
+
+    @PrimaryKey
+    private int Id;
     private String LabelName;
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return Id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.Id = id;
     }
 
     public String getLabelName() {
@@ -22,6 +27,6 @@ public class Label {
 
     @Override
     public String toString() {
-        return "Label{" +  "ID=" + ID + ", LabelName='" + LabelName + '\'' + '}';
+        return "Label{" +  "ID=" + Id + ", LabelName='" + LabelName + '\'' + '}';
     }
 }

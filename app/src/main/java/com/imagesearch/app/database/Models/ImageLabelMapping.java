@@ -1,24 +1,25 @@
 package com.imagesearch.app.database.Models;
 
-import java.util.Date;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class ImageLabelMapping {
-    public long DetectionId;
+public class ImageLabelMapping extends RealmObject {
+
+    @PrimaryKey
+    public int Id;
     public long LabelID;
     public String LabelName;
     public long ImageId;
     public String ImageName;
     public String FullPath;
     public String UriPath;
-    public Date CreatedDtim;
-    public Date UpdatedDtim;
 
-    public long getDetectionId() {
-        return DetectionId;
+    public long getId() {
+        return Id;
     }
 
-    public void setDetectionId(int detectionId) {
-        DetectionId = detectionId;
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getLabelName() {
@@ -69,34 +70,16 @@ public class ImageLabelMapping {
         UriPath = uriPath;
     }
 
-    public Date getCreatedDtim() {
-        return CreatedDtim;
-    }
-
-    public void setCreatedDtim(Date createdDtim) {
-        CreatedDtim = createdDtim;
-    }
-
-    public Date getUpdatedDtim() {
-        return UpdatedDtim;
-    }
-
-    public void setUpdatedDtim(Date updatedDtim) {
-        UpdatedDtim = updatedDtim;
-    }
-
     @Override
     public String toString() {
         return "ImageLabelMapping{" +
-                "DetectionId=" + DetectionId +
+                "Id=" + Id +
                 ", LabelName='" + LabelName + '\'' +
                 ", LabelID=" + LabelID +
                 ", ImageId=" + ImageId +
                 ", ImageName='" + ImageName + '\'' +
                 ", FullPath='" + FullPath + '\'' +
                 ", UriPath =" + UriPath +
-                ", CreatedDtim=" + CreatedDtim +
-                ", UpdatedDtim=" + UpdatedDtim +
                 '}';
     }
 

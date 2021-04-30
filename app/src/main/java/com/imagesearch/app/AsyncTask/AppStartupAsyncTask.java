@@ -6,19 +6,18 @@ import android.content.Context;
 import com.imagesearch.app.CommonClass.AppStartup;
 import com.imagesearch.app.database.DatabaseInitializer;
 
+import io.realm.Realm;
 import needle.Needle;
 
 public class AppStartupAsyncTask  {
-    private final DatabaseInitializer db;
     private final Context context;
     private Dialog progressBar;
     private AppStartup appStartup;
 
-    public AppStartupAsyncTask(Context context, Dialog progressBar , DatabaseInitializer db) {
+    public AppStartupAsyncTask(Context context, Dialog progressBar) {
         this.progressBar = progressBar;
-        this.db = db;
         this.context = context;
-        this.appStartup = new AppStartup(context, db);
+        this.appStartup = new AppStartup(context);
     }
 
     public void run (){

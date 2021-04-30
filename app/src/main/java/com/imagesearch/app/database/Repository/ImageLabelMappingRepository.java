@@ -1,22 +1,11 @@
 package com.imagesearch.app.database.Repository;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.imagesearch.app.database.DatabaseInitializer;
-import com.imagesearch.app.database.Models.ImageLabelDataModel;
 import com.imagesearch.app.database.Models.ImageLabelMapping;
-import com.imagesearch.app.database.Models.Images;
-import com.imagesearch.app.database.Models.Label;
-import com.imagesearch.app.database.Models.LabelImageDataModel;
-import com.imagesearch.app.database.Tables.ImageLabelMappingTable;
-import com.imagesearch.app.database.Tables.ImageTable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class ImageLabelMappingRepository {
@@ -33,21 +22,46 @@ public class ImageLabelMappingRepository {
         return db.where(ImageLabelMapping.class).findAllAsync();
     }
 
-
     public void Add(ImageLabelMapping mapping) {
-
+        db.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(mapping);
+            }
+        });
     }
 
     public void Add(List<ImageLabelMapping> mapping) {
-
+        db.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(mapping);
+            }
+        });
     }
 
-    public void GetLabelsByImages(long ImageID) {
-
+    public void GetLabelsByImages(int ImageID, RealmChangeListener<RealmResults<ImageLabelMapping>> listener) {
+        this.db.where(ImageLabelMapping.class)
+                .equalTo("ImageId", ImageID)
+                .findAllAsync()
+                .addChangeListener(new RealmChangeListener<RealmResults<ImageLabelMapping>>() {
+                    @Override
+                    public void onChange(RealmResults<ImageLabelMapping> imageLabelMappings) {
+                        ImageLabelMapping l = new ImageLabelMapping();
+                    }
+                });
     }
 
-    public void GetImagesByLabels(long LabelID, int MaxImages) {
-
+    public void GetImagesByLabels(int LabelID, int MaxImages) {
+        this.db.where(ImageLabelMapping.class)
+                .equalTo("LabelId", LabelID)
+                .findAllAsync()
+                .addChangeListener(new RealmChangeListener<RealmResults<ImageLabelMapping>>() {
+                    @Override
+                    public void onChange(RealmResults<ImageLabelMapping> imageLabelMappings) {
+                        ImageLabelMapping l = new ImageLabelMapping();
+                    }
+                });
     }
 
     public void GetTopLabels(int labelCount) {
@@ -55,7 +69,10 @@ public class ImageLabelMappingRepository {
     }
 
     public void GetTrendingLabels() {
-
+//        this.db.where(ImageLabelMapping.class)
+//                .distinct("LabelName")
+//                .count(
+//        ;
     }
 
     public void GetMapping() {

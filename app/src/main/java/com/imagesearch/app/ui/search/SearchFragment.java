@@ -39,23 +39,25 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmResults;
 import needle.Needle;
 
 public class SearchFragment extends Fragment {
     private Context context;
     public RecyclerView searchRecycleView;
     public SearchViewAdaptor searchViewAdaptor;
-    ImagesRepository ImageRepo;
+    ImagesRepository imagesRepository;
     List<Images> items = new ArrayList<Images>();
     EditText txtSearch;
+    RealmResults<Images> images;
     CharSequence searchedText = "";
     private final int numberOfColums = 3;
     MKLoader loader;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         context = getActivity().getApplicationContext();
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        imagesRepository = new ImagesRepository();
 
         View view = root.findViewById(R.id.no_search_found);
         searchRecycleView = root.findViewById(R.id.recyclerView);
@@ -65,14 +67,10 @@ public class SearchFragment extends Fragment {
         view.setVisibility(View.INVISIBLE);
         searchRecycleView.setVisibility(view.INVISIBLE);
 
-        DatabaseInitializer db = new DatabaseInitializer(context);
-        ImageRepo = new ImagesRepository(db);
-        items = ImageRepo.GetImages();
-
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
-                items = ImageRepo.GetImages();
+                items = imagesRepository.Get();
                 Needle.onMainThread().execute(new Runnable() {
                     @Override
                     public void run() {

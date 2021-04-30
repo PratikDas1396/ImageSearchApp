@@ -28,6 +28,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MainActivity extends AppCompatActivity {
 
     List<String> items = new ArrayList<String>();
@@ -51,11 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
             loadingDialog = CustomDialog.getLoadingDialog(this);
 
-            db = new DatabaseInitializer(MainActivity.this);
-
-            AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(this, loadingDialog, db);
+            DatabaseInitializer.Init(this);
+            AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(this, loadingDialog);
             backgroundTask.run();
-
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -30,18 +30,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (AppPermission.checkAppPermissionsGranted(this)) {
             runMainApp();
         } else {
-            if (AppPermission.shouldShowRequestPermissionRationale(this)) {
-                Dialog dialog = CustomDialog.getAllPermissionDialog(this);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnGrantPermission);
-                btnOk.setOnClickListener(v -> {
-                    dialog.dismiss();
-                    AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
-                });
-                dialog.show();
-            }
-            else{
-                AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
-            }
+            AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
+
+//            if (AppPermission.shouldShowRequestPermissionRationale(this)) {
+//                Dialog dialog = CustomDialog.getAllPermissionDialog(this);
+//                Button btnOk = (Button) dialog.findViewById(R.id.btnGrantPermission);
+//                btnOk.setOnClickListener(v -> {
+//                    dialog.dismiss();
+//                    AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
+//                });
+//                dialog.show();
+//            }
+//            else{
+//                AppPermission.requestAppPermission(this, READ_FILE_PERMISSION_CODE);
+//            }
         }
     }
 
