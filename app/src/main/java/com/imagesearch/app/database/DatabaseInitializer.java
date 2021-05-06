@@ -16,8 +16,8 @@ public class DatabaseInitializer {
         Realm.init(context);
         config = new RealmConfiguration.Builder()
                 .name(Database_Name)
-                .allowQueriesOnUiThread(false)
-                .allowWritesOnUiThread(false)
+                .allowQueriesOnUiThread(true)
+                .allowWritesOnUiThread(true)
                 .build();
 
         Realm.setDefaultConfiguration(config);

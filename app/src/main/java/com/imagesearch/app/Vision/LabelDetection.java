@@ -16,13 +16,13 @@ import java.util.List;
 
 public class LabelDetection {
 
-    ImageLabeler recognizer;
+    private ImageLabeler recognizer;
 
     public LabelDetection(){
         recognizer = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
     }
 
-    private void detect(Context context,
+    public void detect(Context context,
                         Uri filePath,
                         OnSuccessListener<List<ImageLabel>> successListener,
                         OnFailureListener failureListener

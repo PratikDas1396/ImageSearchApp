@@ -1,6 +1,7 @@
 package com.imagesearch.app.database.Repository;
 
 import com.imagesearch.app.database.Models.ImageLabelMapping;
+import com.imagesearch.app.database.Models.Images;
 
 import java.util.List;
 
@@ -12,36 +13,35 @@ public class ImageLabelMappingRepository {
 
     private int TopLabels = 10;
     private int NoOfImages = 10;
-    private Realm db;
 
-    public ImageLabelMappingRepository(Realm db) {
-        this.db = db;
-    }
-
-    private RealmResults<ImageLabelMapping> GetAll() {
-        return db.where(ImageLabelMapping.class).findAllAsync();
+    public ImageLabelMappingRepository() {
     }
 
     public void Add(ImageLabelMapping mapping) {
+        Realm db = Realm.getDefaultInstance();
         db.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(mapping);
             }
         });
+        db.close();
     }
 
     public void Add(List<ImageLabelMapping> mapping) {
+        Realm db = Realm.getDefaultInstance();
         db.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(mapping);
             }
         });
+        db.close();
     }
 
     public void GetLabelsByImages(int ImageID, RealmChangeListener<RealmResults<ImageLabelMapping>> listener) {
-        this.db.where(ImageLabelMapping.class)
+        Realm db = Realm.getDefaultInstance();
+        db.where(ImageLabelMapping.class)
                 .equalTo("ImageId", ImageID)
                 .findAllAsync()
                 .addChangeListener(new RealmChangeListener<RealmResults<ImageLabelMapping>>() {
@@ -50,10 +50,12 @@ public class ImageLabelMappingRepository {
                         ImageLabelMapping l = new ImageLabelMapping();
                     }
                 });
+        db.close();
     }
 
     public void GetImagesByLabels(int LabelID, int MaxImages) {
-        this.db.where(ImageLabelMapping.class)
+        Realm db = Realm.getDefaultInstance();
+        db.where(ImageLabelMapping.class)
                 .equalTo("LabelId", LabelID)
                 .findAllAsync()
                 .addChangeListener(new RealmChangeListener<RealmResults<ImageLabelMapping>>() {
@@ -62,6 +64,7 @@ public class ImageLabelMappingRepository {
                         ImageLabelMapping l = new ImageLabelMapping();
                     }
                 });
+        db.close();
     }
 
     public void GetTopLabels(int labelCount) {
@@ -69,14 +72,15 @@ public class ImageLabelMappingRepository {
     }
 
     public void GetTrendingLabels() {
-//        this.db.where(ImageLabelMapping.class)
-//                .distinct("LabelName")
-//                .count(
-//        ;
+        Realm db = Realm.getDefaultInstance();
+        long count = db.where(ImageLabelMapping.class)
+                .distinct("LabelName")
+                //.findAll()
+                .count();
+        db.close();
     }
 
     public void GetMapping() {
 
     }
-
 }

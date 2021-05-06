@@ -5,22 +5,12 @@ import io.realm.annotations.PrimaryKey;
 
 public class ImageLabelMapping extends RealmObject {
 
-    @PrimaryKey
-    public int Id;
     public long LabelID;
     public String LabelName;
     public long ImageId;
     public String ImageName;
     public String FullPath;
     public String UriPath;
-
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
 
     public String getLabelName() {
         return LabelName;
@@ -73,7 +63,6 @@ public class ImageLabelMapping extends RealmObject {
     @Override
     public String toString() {
         return "ImageLabelMapping{" +
-                "Id=" + Id +
                 ", LabelName='" + LabelName + '\'' +
                 ", LabelID=" + LabelID +
                 ", ImageId=" + ImageId +

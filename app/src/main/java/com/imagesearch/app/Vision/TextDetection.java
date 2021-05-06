@@ -14,13 +14,13 @@ import java.io.IOException;
 
 public class TextDetection {
 
-    TextRecognizer recognizer;
+    private TextRecognizer recognizer;
 
     public TextDetection() {
         recognizer = TextRecognition.getClient();
     }
 
-    private void detect(Context context,
+    public void detect(Context context,
                         Uri filePath,
                         OnSuccessListener<Text> successListener,
                         OnFailureListener failureListener

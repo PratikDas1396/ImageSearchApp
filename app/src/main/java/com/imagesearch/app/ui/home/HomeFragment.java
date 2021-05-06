@@ -14,16 +14,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.imagesearch.app.Adaptor.TopLabelViewAdaptor;
 import com.imagesearch.app.CommonClass.AppPermission;
 import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
+import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 import com.imagesearch.app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import needle.Needle;
 
 public class HomeFragment extends Fragment {
 
@@ -33,7 +37,7 @@ public class HomeFragment extends Fragment {
     public RecyclerView topLabelRecycleView;
     public TopLabelViewAdaptor adaptor;
     List<LabelImageDataModel> items = new ArrayList<LabelImageDataModel>();
-    //private ImageLableMappingRepository ImageRepo;
+    private ImageLabelMappingRepository imageLabelMappingRepository;
     FragmentHomeBinding binding;
     DatabaseInitializer db;
 
@@ -85,10 +89,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void appStart() {
-//        ImageRepo = new ImageLableMappingRepository(db);
-//        items = ImageRepo.GetTrendingLabels();
-//        adaptor = new TopLabelViewAdaptor(context, items);
-//        topLabelRecycleView.setAdapter(adaptor);
+        imageLabelMappingRepository = new ImageLabelMappingRepository();
+        Needle.onBackgroundThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                imageLabelMappingRepository.GetTrendingLabels();
+                Needle.onMainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        adaptor = new TopLabelViewAdaptor(context, items);
+                        topLabelRecycleView.setAdapter(adaptor);
+                    }
+                });
+            }
+        });
     }
 
     private void showDialog() {

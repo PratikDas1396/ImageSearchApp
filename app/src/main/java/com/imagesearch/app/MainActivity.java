@@ -8,7 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.imagesearch.app.AsyncTask.AppStartupAsyncTask;
 import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.CommonClass.ImageFileFilter;
+import com.imagesearch.app.Vision.VisionDetection;
 import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.Images;
 import com.imagesearch.app.database.Repository.ImagesRepository;
@@ -30,6 +33,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import needle.Needle;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            //Set Action bar
+            //Set Action bars
             setActionBar();
 
             //Set Bottom Navigation Bar
@@ -57,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
             DatabaseInitializer.Init(this);
             AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(this, loadingDialog);
             backgroundTask.run();
+
+            ImagesRepository imagesRepository = new ImagesRepository();
+            Context context = this;
+            Needle.onBackgroundThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<Images> images = imagesRepository.Get();
+                    for(int i=0; i<images.size(); i++){
+                        VisionDetection detection = new VisionDetection(context);
+                        detection.detect(images.get(i));
+                    }
+                }
+            });
 
         } catch (Exception ex) {
             ex.printStackTrace();
