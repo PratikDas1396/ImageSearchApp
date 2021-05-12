@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.imagesearch.app.Animation.SearchItemAnimation;
 import com.imagesearch.app.R;
+import com.imagesearch.app.database.Models.ImageLabelMapping;
 import com.imagesearch.app.database.Models.Images;
 
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ import java.util.List;
 
 public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.SearchViewHolder> {
 
-    private List<Images> DataSet;
-    private List<Images> filteredDataList;
+    private List<ImageLabelMapping> DataSet;
+    private List<ImageLabelMapping> filteredDataList;
     private Context context;
 
-    public SearchViewAdaptor(Context context, List<Images> DataSet) {
+    public SearchViewAdaptor(Context context, List<ImageLabelMapping> DataSet) {
         this.context = context;
         this.DataSet = DataSet;
         this.filteredDataList = DataSet;
@@ -44,7 +45,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        Images img = this.filteredDataList.get(position);
+        ImageLabelMapping img = this.filteredDataList.get(position);
         try {
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(context)
@@ -53,7 +54,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
                     .into(holder.imageView);
 
             holder.imageView.setOnClickListener(v -> {
-                Toast.makeText(context, img.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, img.getImageName(), Toast.LENGTH_LONG).show();
             });
 
         } catch (Exception ex) {
@@ -75,11 +76,11 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
                     filteredDataList = DataSet;
                 } else {
 
-                    List<Images> lstFiltered = new ArrayList<Images>();
+                    List<ImageLabelMapping> lstFiltered = new ArrayList<ImageLabelMapping>();
                     if (Key.length() >= 3) {
 
-                        DataSet.stream().filter(file -> file.getName().toLowerCase()
-                                .contains(Key.toLowerCase()))
+                        DataSet.stream()
+                                .filter(file -> file.getImageName().toLowerCase().contains(Key.toLowerCase()))
                                 .forEach(filtered -> lstFiltered.add(filtered));
 
                         filteredDataList = lstFiltered;
@@ -93,7 +94,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredDataList = (List<Images>) filterResults.values;
+                filteredDataList = (List<ImageLabelMapping>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

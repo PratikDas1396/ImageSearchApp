@@ -98,7 +98,7 @@ public class TopLabelViewAdaptor extends RecyclerView.Adapter<TopLabelViewAdapto
         }
     }
 
-    private void setChildRecycleView(RecyclerView recycleView, List<Images> data){
+    private void setChildRecycleView(RecyclerView recycleView, List<ImageLabelMapping> data){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         recycleView.setLayoutManager(layoutManager);
         recycleView.setAdapter(new TopLabelRowItemAdaptor(context, data));

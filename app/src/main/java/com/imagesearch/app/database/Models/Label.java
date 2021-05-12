@@ -8,6 +8,7 @@ public class Label extends RealmObject {
     @PrimaryKey
     private int Id;
     private String LabelName;
+    private long ImageCount;
 
     public long getId() {
         return Id;
@@ -25,8 +26,16 @@ public class Label extends RealmObject {
         this.LabelName = LabelName;
     }
 
+    public long getCount() {
+        return ImageCount;
+    }
+
+    public void setCount(long count) {
+        ImageCount = count;
+    }
+
     @Override
     public String toString() {
-        return "Label{" +  "ID=" + Id + ", LabelName='" + LabelName + '\'' + '}';
+        return "Label{" + "ID=" + Id + ", LabelName='" + LabelName + '\'' + '}';
     }
 }

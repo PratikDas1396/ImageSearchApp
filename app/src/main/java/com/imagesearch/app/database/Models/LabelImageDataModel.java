@@ -5,7 +5,7 @@ import java.util.List;
 public class LabelImageDataModel {
     private long ID;
     private String LabelName;
-    private List<Images> images;
+    private List<ImageLabelMapping> images;
 
     public long getID() {
         return ID;
@@ -23,11 +23,11 @@ public class LabelImageDataModel {
         LabelName = labelName;
     }
 
-    public List<Images> getImages() {
+    public List<ImageLabelMapping> getImages() {
         return images;
     }
 
-    public void setImages(List<Images> images) {
+    public void setImages(List<ImageLabelMapping> images) {
         this.images = images;
     }
 }

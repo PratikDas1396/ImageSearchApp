@@ -20,8 +20,10 @@ import com.imagesearch.app.CommonClass.AppPermission;
 import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.DatabaseInitializer;
+import com.imagesearch.app.database.Models.Label;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
+import com.imagesearch.app.database.Repository.LabelRepository;
 import com.imagesearch.app.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
@@ -37,7 +39,8 @@ public class HomeFragment extends Fragment {
     public RecyclerView topLabelRecycleView;
     public TopLabelViewAdaptor adaptor;
     List<LabelImageDataModel> items = new ArrayList<LabelImageDataModel>();
-    private ImageLabelMappingRepository imageLabelMappingRepository;
+    private ImageLabelMappingRepository mappingRepository;
+    private LabelRepository labelRepository;
     FragmentHomeBinding binding;
     DatabaseInitializer db;
 
@@ -89,11 +92,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void appStart() {
-        imageLabelMappingRepository = new ImageLabelMappingRepository();
+        labelRepository = new LabelRepository();
+        mappingRepository = new ImageLabelMappingRepository();
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
-                imageLabelMappingRepository.GetTrendingLabels();
+                items = mappingRepository.GetImagesByLabel(labelRepository.GetTrendingLabels());
                 Needle.onMainThread().execute(new Runnable() {
                     @Override
                     public void run() {

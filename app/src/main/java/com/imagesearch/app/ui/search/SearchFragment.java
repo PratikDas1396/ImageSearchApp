@@ -1,63 +1,44 @@
 package com.imagesearch.app.ui.search;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.imagesearch.app.Adaptor.SearchViewAdaptor;
-import com.imagesearch.app.CommonClass.ImageFileFilter;
-import com.imagesearch.app.MainActivity;
 import com.imagesearch.app.R;
-import com.imagesearch.app.database.DatabaseInitializer;
-import com.imagesearch.app.database.Models.Images;
-import com.imagesearch.app.database.Repository.ImagesRepository;
+import com.imagesearch.app.database.Models.ImageLabelMapping;
+import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 import com.tuyenmonkey.mkloader.MKLoader;
 
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmResults;
 import needle.Needle;
 
 public class SearchFragment extends Fragment {
     private Context context;
-    public RecyclerView searchRecycleView;
-    public SearchViewAdaptor searchViewAdaptor;
-    ImagesRepository imagesRepository;
-    List<Images> items = new ArrayList<Images>();
-    EditText txtSearch;
-    RealmResults<Images> images;
-    CharSequence searchedText = "";
+    private RecyclerView searchRecycleView;
+    private SearchViewAdaptor searchViewAdaptor;
+    private ImageLabelMappingRepository imagesLableMappingRepository;
+    private List<ImageLabelMapping> items = new ArrayList<ImageLabelMapping>();
+    private EditText txtSearch;
+    private CharSequence searchedText = "";
     private final int numberOfColums = 3;
     MKLoader loader;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getActivity().getApplicationContext();
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-        imagesRepository = new ImagesRepository();
 
         View view = root.findViewById(R.id.no_search_found);
         searchRecycleView = root.findViewById(R.id.recyclerView);
@@ -70,7 +51,8 @@ public class SearchFragment extends Fragment {
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
-                items = imagesRepository.Get();
+                imagesLableMappingRepository = new ImageLabelMappingRepository();
+                items = imagesLableMappingRepository.Get();
                 Needle.onMainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -91,7 +73,6 @@ public class SearchFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchViewAdaptor.getSearchFilter().filter(s);

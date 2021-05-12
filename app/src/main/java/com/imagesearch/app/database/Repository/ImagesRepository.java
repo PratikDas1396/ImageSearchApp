@@ -38,10 +38,28 @@ public class ImagesRepository {
         db.where(Images.class).findAllAsync().addChangeListener(listener);
     }
 
+    public void setDetectionStatus(Images image, int status) {
+        Realm db = Realm.getDefaultInstance();
+        image.setIsDetectionDone(status);
+        db.beginTransaction();
+        db.copyToRealmOrUpdate(image);
+        db.commitTransaction();
+        db.close();
+    }
+
     public List<Images> Get() {
         Realm db = Realm.getDefaultInstance();
         List<Images> images = new ArrayList<Images>();
         RealmResults<Images> task = db.where(Images.class).findAll();
+        images.addAll(db.copyFromRealm(task));
+        db.close();
+        return images;
+    }
+
+    public List<Images> GetPending() {
+        Realm db = Realm.getDefaultInstance();
+        List<Images> images = new ArrayList<Images>();
+        RealmResults<Images> task = db.where(Images.class).equalTo("isDetectionDone", 0).findAll();
         images.addAll(db.copyFromRealm(task));
         db.close();
         return images;

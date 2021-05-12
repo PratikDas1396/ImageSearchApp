@@ -21,9 +21,9 @@ import java.util.List;
 public class TopLabelRowItemAdaptor extends RecyclerView.Adapter<TopLabelRowItemAdaptor.TopLabelRowItemViewHolder> {
 
     private final Context context;
-    List<Images> data;
+    List<ImageLabelMapping> data;
 
-    public TopLabelRowItemAdaptor(Context context, List<Images> data) {
+    public TopLabelRowItemAdaptor(Context context, List<ImageLabelMapping> data) {
         this.context = context;
         this.data = data;
     }
@@ -39,7 +39,7 @@ public class TopLabelRowItemAdaptor extends RecyclerView.Adapter<TopLabelRowItem
 
     @Override
     public void onBindViewHolder(@NonNull TopLabelRowItemViewHolder holder, int position) {
-        Images img = this.data.get(position);
+        ImageLabelMapping img = this.data.get(position);
         try {
             //SearchItemAnimation.animateFadeIn(holder.imageView, position);
 
@@ -50,7 +50,7 @@ public class TopLabelRowItemAdaptor extends RecyclerView.Adapter<TopLabelRowItem
                     .into(holder.imageView);
 
             holder.imageView.setOnClickListener(v -> {
-                Toast.makeText(context, img.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, img.getImageName(), Toast.LENGTH_LONG).show();
             });
 
         } catch (Exception ex) {
