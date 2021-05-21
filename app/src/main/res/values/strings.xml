@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ImageSearchApp</string>
+    <string name="app_name">Search in Images</string>
     <string name="action_settings">Setting</string>
     <string name="search_hint">Search Here</string>
     <string name="title_home">Home</string>
@@ -17,6 +17,13 @@
     values-round/strings.xml for round devices.
     -->
     <string name="all_permission_text">Please grant requested permission for better use of app</string>
-    <string name="run_background_task">please run job</string>
+    <string name="run_background_task">Please run job</string>
+
+
+    <string name="info_Header">Developed By</string>
+    <string name="dev_name">Mr. Pratik Krishna Das</string>
+    <string name="col_name">S.K. Somaiya College of Art, Science and Commerce</string>
+
+
 
 </resources>

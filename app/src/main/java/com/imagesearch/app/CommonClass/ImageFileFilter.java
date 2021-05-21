@@ -10,6 +10,8 @@ public class ImageFileFilter implements FileFilter {
 
     public ImageFileFilter() {
         miscellaneous.add("Android");
+        miscellaneous.add("MIUI");
+
     }
 
     @Override

@@ -2,11 +2,10 @@ package com.imagesearch.app.ui.search;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -16,8 +15,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.imagesearch.app.Adaptor.SearchViewAdaptor;
 import com.imagesearch.app.R;
-import com.imagesearch.app.database.Models.ImageLabelMapping;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
+import com.imagesearch.app.database.Models.Images;
+import com.imagesearch.app.database.Repository.ImagesRepository;
 import com.tuyenmonkey.mkloader.MKLoader;
 
 import java.util.ArrayList;
@@ -29,8 +29,10 @@ public class SearchFragment extends Fragment {
     private Context context;
     private RecyclerView searchRecycleView;
     private SearchViewAdaptor searchViewAdaptor;
-    private ImageLabelMappingRepository imagesLableMappingRepository;
-    private List<ImageLabelMapping> items = new ArrayList<ImageLabelMapping>();
+    private ImageLabelMappingRepository imagesLabelMappingRepository;
+    private ImagesRepository imagesRepository;
+    private List<Images> items = new ArrayList<Images>();
+    private Button btnSearch;
     private EditText txtSearch;
     private CharSequence searchedText = "";
     private final int numberOfColums = 3;
@@ -44,6 +46,11 @@ public class SearchFragment extends Fragment {
         searchRecycleView = root.findViewById(R.id.recyclerView);
         loader = root.findViewById(R.id.search_loader);
 
+        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(numberOfColums, StaggeredGridLayoutManager.VERTICAL);
+        searchRecycleView.setLayoutManager(layoutManager);
+        searchViewAdaptor = new SearchViewAdaptor(context, items);
+        searchRecycleView.setAdapter(searchViewAdaptor);
+
         loader.setVisibility(View.VISIBLE);
         view.setVisibility(View.INVISIBLE);
         searchRecycleView.setVisibility(view.INVISIBLE);
@@ -51,13 +58,15 @@ public class SearchFragment extends Fragment {
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
-                imagesLableMappingRepository = new ImageLabelMappingRepository();
-                items = imagesLableMappingRepository.Get();
+//                imagesLabelMappingRepository = new ImageLabelMappingRepository();
+                imagesRepository = new ImagesRepository();
+                items = imagesRepository.Get();
+                //items = imagesLabelMappingRepository.GetImagesByLabel();
                 Needle.onMainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(numberOfColums, StaggeredGridLayoutManager.VERTICAL);
-                        searchRecycleView.setLayoutManager(layoutManager);
+                        //RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(numberOfColums, StaggeredGridLayoutManager.VERTICAL);
+                        //searchRecycleView.setLayoutManager(layoutManager);
                         searchViewAdaptor = new SearchViewAdaptor(context, items);
                         searchRecycleView.setAdapter(searchViewAdaptor);
                         loader.setVisibility(View.INVISIBLE);
@@ -68,30 +77,47 @@ public class SearchFragment extends Fragment {
         });
 
         txtSearch = root.findViewById(R.id.txtSearch);
-        txtSearch.addTextChangedListener(new TextWatcher() {
+        btnSearch = root.findViewById(R.id.btnSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View v) {
+                loader.setVisibility(View.VISIBLE);
+                searchRecycleView.setVisibility(View.INVISIBLE);
 
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchViewAdaptor.getSearchFilter().filter(s);
-                searchedText = s;
+                searchViewAdaptor.getSearchFilter().filter(txtSearch.getText());
 
-                if (searchViewAdaptor.getItemCount() == 0) {
-                    view.setVisibility(View.VISIBLE);
-                    searchRecycleView.setVisibility(view.INVISIBLE);
-                } else {
-                    view.setVisibility(View.INVISIBLE);
-                    searchRecycleView.setVisibility(view.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                loader.setVisibility(View.INVISIBLE);
+                searchRecycleView.setVisibility(View.VISIBLE);
             }
         });
+
+//        txtSearch.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+////                searchedText = s;
+////
+////                loader.setVisibility(View.INVISIBLE);
+////                if (searchViewAdaptor.getItemCount() == 0) {
+////                    view.setVisibility(View.VISIBLE);
+////                    searchRecycleView.setVisibility(view.INVISIBLE);
+////                } else {
+////                    view.setVisibility(View.INVISIBLE);
+////                    searchRecycleView.setVisibility(view.VISIBLE);
+////                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
         return root;
     }
 }

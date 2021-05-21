@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.imagesearch.app.Animation.SearchItemAnimation;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.Models.*;
 

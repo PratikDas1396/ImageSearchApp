@@ -1,7 +1,6 @@
 package com.imagesearch.app.Adaptor;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.imagesearch.app.Animation.SearchItemAnimation;
 import com.imagesearch.app.R;
-import com.imagesearch.app.database.Models.ImageLabelMapping;
 import com.imagesearch.app.database.Models.Images;
+import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.SearchViewHolder> {
 
-    private List<ImageLabelMapping> DataSet;
-    private List<ImageLabelMapping> filteredDataList;
+    private List<Images> DataSet;
+    private List<Images> filteredDataList;
     private Context context;
 
-    public SearchViewAdaptor(Context context, List<ImageLabelMapping> DataSet) {
+    public SearchViewAdaptor(Context context, List<Images> DataSet) {
         this.context = context;
         this.DataSet = DataSet;
         this.filteredDataList = DataSet;
@@ -45,7 +43,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        ImageLabelMapping img = this.filteredDataList.get(position);
+        Images img = this.filteredDataList.get(position);
         try {
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
             Glide.with(context)
@@ -54,7 +52,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
                     .into(holder.imageView);
 
             holder.imageView.setOnClickListener(v -> {
-                Toast.makeText(context, img.getImageName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, img.getName(), Toast.LENGTH_LONG).show();
             });
 
         } catch (Exception ex) {
@@ -71,22 +69,14 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
+                filteredDataList = new ArrayList<Images>();
                 String Key = charSequence.toString();
                 if (Key.isEmpty()) {
                     filteredDataList = DataSet;
                 } else {
-
-                    List<ImageLabelMapping> lstFiltered = new ArrayList<ImageLabelMapping>();
-                    if (Key.length() >= 3) {
-
-                        DataSet.stream()
-                                .filter(file -> file.getImageName().toLowerCase().contains(Key.toLowerCase()))
-                                .forEach(filtered -> lstFiltered.add(filtered));
-
-                        filteredDataList = lstFiltered;
-                    }
+                    ImageLabelMappingRepository imagesLabelMappingRepository = new ImageLabelMappingRepository();
+                    filteredDataList = imagesLabelMappingRepository.GetImagesByLabel(Key.toLowerCase());
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = filteredDataList;
                 return filterResults;
@@ -94,7 +84,7 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredDataList = (List<ImageLabelMapping>) filterResults.values;
+                filteredDataList = (List<Images>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

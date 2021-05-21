@@ -2,6 +2,7 @@ package com.imagesearch.app;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -100,25 +101,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_Labels: {
-                Toast.makeText(this, "this is action label", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LabelActivity.class);
-                intent.putExtra("Value", "Label");
-                startActivity(intent);
-                break;
-            }
-            case R.id.action_Images: {
-                Toast.makeText(this, "this is action image", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LabelActivity.class);
-                intent.putExtra("Value", "Image");
-                startActivity(intent);
-                break;
-            }
-            case R.id.action_mapping: {
-                Toast.makeText(this, "this is action mapping", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LabelActivity.class);
-                intent.putExtra("Value", "Mapping");
-                startActivity(intent);
+            case R.id.action_about: {
+                Toast.makeText(this, "this is about us", Toast.LENGTH_SHORT).show();
                 break;
             }
             default:
@@ -136,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     public void setNavigationMenu() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_setting)
+                R.id.navigation_home, R.id.navigation_search)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

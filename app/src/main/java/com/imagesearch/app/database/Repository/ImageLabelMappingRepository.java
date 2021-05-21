@@ -6,11 +6,9 @@ import com.imagesearch.app.database.Models.Label;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class ImageLabelMappingRepository {
@@ -23,7 +21,7 @@ public class ImageLabelMappingRepository {
 
     public void Add(ImageLabelMapping mapping) {
         Realm db = Realm.getDefaultInstance();
-        db.executeTransactionAsync(new Realm.Transaction() {
+        db.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(mapping);
@@ -34,7 +32,7 @@ public class ImageLabelMappingRepository {
 
     public void Add(List<ImageLabelMapping> mapping) {
         Realm db = Realm.getDefaultInstance();
-        db.executeTransactionAsync(new Realm.Transaction() {
+        db.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(mapping);
@@ -49,6 +47,8 @@ public class ImageLabelMappingRepository {
         for (int i = 0; i < labels.size(); i++) {
             RealmResults<ImageLabelMapping> result = db.where(ImageLabelMapping.class)
                     .equalTo("LabelName", labels.get(i).getLabelName())
+                    .distinct("ImageId")
+                    .limit(NoOfImages)
                     .findAll();
             List<ImageLabelMapping> mapping = db.copyFromRealm(result);
 
@@ -62,9 +62,9 @@ public class ImageLabelMappingRepository {
         return items;
     }
 
-    public ImageLabelMapping GetMapping(int ImageId) {
+    public ImageLabelMapping GetMapping(long ImageId) {
         Realm db = Realm.getDefaultInstance();
-        ImageLabelMapping task = db.where(ImageLabelMapping.class).equalTo("ImageId", ImageId).findFirst();
+        ImageLabelMapping task = db.where(ImageLabelMapping.class).equalTo("ImageId", ImageId).distinct("LabelName").findFirst();
         db.close();
         return task;
     }
@@ -77,6 +77,42 @@ public class ImageLabelMappingRepository {
         db.close();
         return mapping;
     }
+
+    public List<ImageLabelMapping> Get(long ImageId) {
+        Realm db = Realm.getDefaultInstance();
+        List<ImageLabelMapping> mapping = new ArrayList<ImageLabelMapping>();
+        RealmResults<ImageLabelMapping> task = db.where(ImageLabelMapping.class).distinct("ImageName").equalTo("ImageId",ImageId).findAll();
+        mapping = db.copyFromRealm(task);
+        db.close();
+        return mapping;
+    }
+
+    public List<Images> GetImagesByLabel(String LabelName) {
+        Realm db = Realm.getDefaultInstance();
+        List<ImageLabelMapping> mapping = new ArrayList<ImageLabelMapping>();
+        List<Images> images = new ArrayList<Images>();
+
+        RealmResults<ImageLabelMapping> task = db.where(ImageLabelMapping.class)
+                .distinct("ImageId")
+                .contains("LabelName", LabelName)
+                .findAll();
+
+        mapping = db.copyFromRealm(task);
+
+        List<Long> ids = new ArrayList<Long>();
+        mapping.stream().forEach(imageLabelMapping -> ids.add(imageLabelMapping.getImageId()));
+
+        Long[] longs = new Long[ids.size()];
+        longs = ids.toArray(longs);
+
+        RealmResults<Images> imageTask = db.where(Images.class).in("Id", longs).findAll();
+
+        images = db.copyFromRealm(imageTask);
+
+        db.close();
+        return images;
+    }
+
 
     public long GetImageCountByLabel(String LabelName) {
         Realm db = Realm.getDefaultInstance();

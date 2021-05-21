@@ -15,12 +15,13 @@
 
         <TextView
             android:id="@+id/label_text"
+            style="@style/labelStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingLeft="10dp"
-            android:text="label"
-            android:textColor="@color/teal_700" />
+
+            />
 
         <Button
             android:id="@+id/label_button"
@@ -30,7 +31,7 @@
             android:layout_alignParentEnd="true"
             android:background="@android:color/transparent"
             android:text="see more"
-            android:textColor="@color/teal_700" />
+            android:visibility="invisible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/row_item_recycler_view"

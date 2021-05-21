@@ -1,7 +1,6 @@
 package com.imagesearch.app.database.Models;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 public class ImageLabelMapping extends RealmObject {
 
@@ -11,6 +10,15 @@ public class ImageLabelMapping extends RealmObject {
     public String ImageName;
     public String FullPath;
     public String UriPath;
+    public int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getLabelName() {
         return LabelName;

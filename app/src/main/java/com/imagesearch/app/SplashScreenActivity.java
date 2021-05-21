@@ -1,6 +1,7 @@
 package com.imagesearch.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.Manifest;
 import android.app.Dialog;

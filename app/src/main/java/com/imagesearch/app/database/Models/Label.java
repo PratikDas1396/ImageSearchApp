@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey;
 public class Label extends RealmObject {
 
     @PrimaryKey
-    private int Id;
+    private long Id;
     private String LabelName;
     private long ImageCount;
 
@@ -14,7 +14,7 @@ public class Label extends RealmObject {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.Id = id;
     }
 

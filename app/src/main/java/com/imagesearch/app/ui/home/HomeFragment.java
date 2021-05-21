@@ -20,7 +20,6 @@ import com.imagesearch.app.CommonClass.AppPermission;
 import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.DatabaseInitializer;
-import com.imagesearch.app.database.Models.Label;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 import com.imagesearch.app.database.Repository.LabelRepository;

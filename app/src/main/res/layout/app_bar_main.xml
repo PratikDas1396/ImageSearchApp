@@ -4,29 +4,31 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TableRow>
+    <TableRow
+        android:padding="5dp"
+        android:elevation="10dp"
+        >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_adb_24"
+            android:id="@+id/action_bar_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:id="@+id/action_bar_back"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        
+            android:maxWidth="24dp"
+            android:maxHeight="24dp"
+            android:src="@drawable/logo" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
             android:text="@string/app_name"
-            android:gravity="left"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-            />
+            android:layout_marginStart="20dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </TableRow>
 
 </TableLayout>

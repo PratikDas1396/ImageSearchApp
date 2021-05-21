@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.label.ImageLabel;
 import com.google.mlkit.vision.objects.DetectedObject;
+import com.google.mlkit.vision.objects.defaults.PredefinedCategory;
 import com.google.mlkit.vision.text.Text;
 import com.imagesearch.app.database.Models.ImageLabelMapping;
 import com.imagesearch.app.database.Models.Label;
@@ -21,7 +22,9 @@ import com.imagesearch.app.database.Models.Images;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 import com.imagesearch.app.database.Repository.ImagesRepository;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,10 +37,13 @@ public class VisionDetection {
     private Uri uri;
     private ImageLabelMappingRepository mappingRepository;
     private ImagesRepository imagesRepository;
+    private final float confidenceThreshhold = 0.7F;
     List<Label> labels;
     Images image;
 
     MutableLiveData<Boolean> isDetectionDone = new MutableLiveData<Boolean>();
+
+   List<String> Human =  Arrays.asList(new String[]{"hair", "foot", "hand", "skin", "toe", "smile", }) ;
 
     public VisionDetection(Context context) {
         this.context = context;
@@ -47,6 +53,8 @@ public class VisionDetection {
         this.mappingRepository = new ImageLabelMappingRepository();
         this.imagesRepository = new ImagesRepository();
         labels = new ArrayList<Label>();
+
+
         //setUpObserver();
     }
 
@@ -65,10 +73,9 @@ public class VisionDetection {
                         map.setLabelID(label.getId());
                         map.setLabelName(label.getLabelName());
                         mappings.add(map);
-
                     });
                     mappingRepository.Add(mappings);
-                    Log.d("Path", "image : " + image.getFullPath());
+                    //Log.d("Path", "image : " + image.getFullPath());
                 }
             }
         });
@@ -82,20 +89,100 @@ public class VisionDetection {
             this.labelDetection.detect(this.context, this.uri, new OnSuccessListener<List<ImageLabel>>() {
                 @Override
                 public void onSuccess(@NonNull List<ImageLabel> imageLabels) {
-                    //List<ImageLabelMapping> mappings = new ArrayList<ImageLabelMapping>();
+
                     for (ImageLabel label : imageLabels) {
-                        boolean contains =  mappings.stream().anyMatch(imageLabelMapping ->
-                            imageLabelMapping.getLabelName() == label.getText()
+                        boolean contains = mappings.stream().anyMatch(imageLabelMapping ->
+                                imageLabelMapping.getLabelName() == label.getText()
                         );
-                        if(contains) continue;
-                        ImageLabelMapping map = new ImageLabelMapping();
-                        map.setImageId(image.getId());
-                        map.setImageName(image.getName());
-                        map.setUriPath(image.getUriPath());
-                        map.setFullPath(image.getFullPath());
-                        map.setLabelID(label.getIndex() + 1);
-                        map.setLabelName(label.getText());
-                        mappings.add(map);
+                        if (contains) continue;
+
+                        if(label.getConfidence() < confidenceThreshhold) continue;
+
+                        ImageLabelMapping map;
+
+                        if(!Human.contains(label.getText().toLowerCase())){
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(label.getIndex() + 1);
+                            map.setLabelName(label.getText().toLowerCase());
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if (PredefinedCategory.FOOD.equals(label.getText())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("food");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if (PredefinedCategory.FASHION_GOOD.equals(label.getText())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("fashion good");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if (PredefinedCategory.HOME_GOOD.equals(label.getText())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("home good");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if (PredefinedCategory.PLACE.equals(label.getText())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("place");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if (PredefinedCategory.PLANT.equals(label.getText())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("plant");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
+
+                        if(Human.contains(label.getText().toLowerCase())) {
+                            map = new ImageLabelMapping();
+                            map.setImageId(image.getId());
+                            map.setImageName(image.getName());
+                            map.setUriPath(image.getUriPath());
+                            map.setFullPath(image.getFullPath());
+                            map.setLabelID(0);
+                            map.setLabelName("human");
+                            map.setType(1);
+                            mappings.add(map);
+                        }
                     }
                     mappingRepository.Add(mappings);
                     updateImageStatus();
@@ -114,18 +201,99 @@ public class VisionDetection {
 
                     for (DetectedObject detectedObject : detectedObjects) {
                         for (DetectedObject.Label labelItem : detectedObject.getLabels()) {
-                            boolean contains =  mappings.stream().anyMatch(imageLabelMapping ->
+                            boolean contains = mappings.stream().anyMatch(imageLabelMapping ->
                                     imageLabelMapping.getLabelName() == labelItem.getText()
                             );
-                            if(contains) continue;
-                            ImageLabelMapping map = new ImageLabelMapping();
-                            map.setImageId(image.getId());
-                            map.setImageName(image.getName());
-                            map.setUriPath(image.getUriPath());
-                            map.setFullPath(image.getFullPath());
-                            map.setLabelID(labelItem.getIndex() + 1);
-                            map.setLabelName(labelItem.getText());
-                            mappings.add(map);
+
+                            if (contains) continue;
+
+                            if(labelItem.getConfidence() < confidenceThreshhold) continue;
+
+                            ImageLabelMapping map;
+
+                            if(!Human.contains(labelItem.getText().toLowerCase())){
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(labelItem.getIndex() + 1);
+                                map.setLabelName(labelItem.getText().toLowerCase());
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if (PredefinedCategory.FOOD.equals(labelItem.getText())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("food");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if (PredefinedCategory.FASHION_GOOD.equals(labelItem.getText())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("fashion good");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if (PredefinedCategory.HOME_GOOD.equals(labelItem.getText())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("home good");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if (PredefinedCategory.PLACE.equals(labelItem.getText())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("place");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if (PredefinedCategory.PLANT.equals(labelItem.getText())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("plant");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
+
+                            if(Human.contains(labelItem.getText().toLowerCase())) {
+                                map = new ImageLabelMapping();
+                                map.setImageId(image.getId());
+                                map.setImageName(image.getName());
+                                map.setUriPath(image.getUriPath());
+                                map.setFullPath(image.getFullPath());
+                                map.setLabelID(0);
+                                map.setLabelName("human");
+                                map.setType(2);
+                                mappings.add(map);
+                            }
                         }
                     }
                     mappingRepository.Add(mappings);
@@ -145,21 +313,22 @@ public class VisionDetection {
                     List<Text.TextBlock> blocks = text.getTextBlocks();
                     StringBuilder str = new StringBuilder();
 
-                    if(blocks.size() > 0)
-                    {
+                    if (blocks.size() > 0) {
                         for (int i = 0; i < blocks.size(); i++) {
                             List<Text.Line> lines = blocks.get(i).getLines();
                             for (int j = 0; j < lines.size(); j++) {
-                                str.append(lines.get(j).getText() + "\n");
+                                str.append(lines.get(j).getText() + "\r\n");
                             }
                         }
+                        str.append("document");
                         ImageLabelMapping map = new ImageLabelMapping();
                         map.setImageId(image.getId());
                         map.setImageName(image.getName());
                         map.setUriPath(image.getUriPath());
                         map.setFullPath(image.getFullPath());
                         map.setLabelID(0);
-                        map.setLabelName(str.toString());
+                        map.setLabelName(str.toString().toLowerCase());
+                        map.setType(3);
                         mappingRepository.Add(map);
                     }
                     updateImageStatus();

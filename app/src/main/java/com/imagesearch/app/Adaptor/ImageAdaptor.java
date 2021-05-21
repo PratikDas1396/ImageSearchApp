@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.Models.Images;
-import com.imagesearch.app.database.Models.Label;
 
 import java.util.List;
 

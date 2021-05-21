@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 public class Images extends RealmObject {
 
     @PrimaryKey
-    private int Id;
+    private long Id;
 
     private String Name;
     private String Extension;
@@ -19,11 +19,11 @@ public class Images extends RealmObject {
     private String FullPath;
     private Date ImageCreationDate;
 
-    public int getId() {
+    public long getId() {
         return this.Id;
     }
 
-    public void setId(int Id) {
+    public void setId(long Id) {
         this.Id = Id;
     }
 

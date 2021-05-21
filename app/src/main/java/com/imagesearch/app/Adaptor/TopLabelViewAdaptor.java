@@ -1,7 +1,6 @@
 package com.imagesearch.app.Adaptor;
 
 import android.content.Context;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +8,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.imagesearch.app.Animation.SearchItemAnimation;
+
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.Models.*;
-import com.imagesearch.app.database.Repository.ImagesRepository;
-import com.imagesearch.app.ui.search.SearchFragment;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.imagesearch.app.database.Repository;
 
 
-import com.imagesearch.app.database.Models.ImageLabelMapping;
 import com.imagesearch.app.database.Models.Label;
 
 import java.util.ArrayList;
@@ -66,12 +65,45 @@ public class LabelRepository {
         return labels;
     }
 
+
+    public Label Get(String LabelName) {
+        Realm db = Realm.getDefaultInstance();
+        Label label = db.where(Label.class).contains("LabelName" , LabelName).findFirst();
+        db.close();
+        return label;
+    }
+
+    public List<Label> Get(String[] LabelList) {
+        Realm db = Realm.getDefaultInstance();
+        List<Label> labels = new ArrayList<Label>();
+        RealmResults<Label> task = db.where(Label.class).in("LabelName", LabelList).findAll();
+        labels.addAll(db.copyFromRealm(task));
+        db.close();
+        return labels;
+    }
+
+
+    public void UpdateCount(String[] LabelList){
+        Realm db = Realm.getDefaultInstance();
+        List<Label> labels = new ArrayList<Label>();
+        RealmResults<Label> task = db.where(Label.class).in("LabelName", LabelList).findAll();
+        labels.addAll(db.copyFromRealm(task));
+        for (Label label : labels) {
+            label.setCount(label.getCount() + 1);
+        }
+        db.beginTransaction();
+        db.copyToRealmOrUpdate(labels);
+        db.commitTransaction();
+        db.close();
+    }
+
     public List<Label> GetTrendingLabels() {
         Realm db = Realm.getDefaultInstance();
         RealmResults<Label> result = db.where(Label.class)
-                                        .sort("ImageCount", Sort.DESCENDING)
-                                        .limit(TopLabels)
-                                        .findAll();
+                .notEqualTo("ImageCount", 0)
+                .sort("ImageCount", Sort.DESCENDING)
+                .limit(TopLabels)
+                .findAll();
         List<Label> map = db.copyFromRealm(result);
         db.close();
         return map;
