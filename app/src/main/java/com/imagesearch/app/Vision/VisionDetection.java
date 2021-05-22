@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.label.ImageLabel;
 import com.google.mlkit.vision.objects.DetectedObject;
 import com.google.mlkit.vision.objects.defaults.PredefinedCategory;
@@ -43,7 +44,7 @@ public class VisionDetection {
 
     MutableLiveData<Boolean> isDetectionDone = new MutableLiveData<Boolean>();
 
-   List<String> Human =  Arrays.asList(new String[]{"hair", "foot", "hand", "skin", "toe", "smile", }) ;
+   List<String> Human =  Arrays.asList(new String[]{"hair", "foot", "hand", "skin", "toe", "smile", "ear" }) ;
 
     public VisionDetection(Context context) {
         this.context = context;
@@ -86,6 +87,14 @@ public class VisionDetection {
         this.uri = Uri.parse(image.getUriPath());
         List<ImageLabelMapping> mappings = new ArrayList<ImageLabelMapping>();
         try {
+            InputImage localImage = InputImage.fromFilePath(context, this.uri);
+        }
+        catch (Exception ex) {
+//            ex.printStackTrace();
+            return;
+        }
+        try {
+
             this.labelDetection.detect(this.context, this.uri, new OnSuccessListener<List<ImageLabel>>() {
                 @Override
                 public void onSuccess(@NonNull List<ImageLabel> imageLabels) {

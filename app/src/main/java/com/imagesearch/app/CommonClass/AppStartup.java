@@ -317,7 +317,7 @@ public class AppStartup {
             list.add("bathing");
             list.add("glacier");
             list.add("gymnastics");
-            list.add("ear");
+            //list.add("ear");
             list.add("flora");
             list.add("shell");
             list.add("grandparent");

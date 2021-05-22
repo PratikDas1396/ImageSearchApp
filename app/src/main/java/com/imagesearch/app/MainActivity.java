@@ -11,11 +11,14 @@ import androidx.navigation.ui.NavigationUI;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
     List<String> items = new ArrayList<String>();
     ImagesRepository ImageRepo;
     DatabaseInitializer db;
+    ProgressBar progressBar;
+    TextView textView;
     //MKLoader loader;
 
-    Dialog loadingDialog;
+     Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
             setNavigationMenu();
 
             loadingDialog = CustomDialog.getLoadingDialog(this);
+//            progressBar = loadingDialog.findViewById(R.id.loading_progress_bar);
+//            textView = loadingDialog.findViewById(R.id.loading_text);
+//
+//            progressBar.getProgressDrawable().setColorFilter(Color.BLACK, android.graphics.PorterDuff.Mode.SRC_IN);
+//            textView.setText("Getting Images to read..");
 
             DatabaseInitializer.Init(this);
             AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(this, loadingDialog);

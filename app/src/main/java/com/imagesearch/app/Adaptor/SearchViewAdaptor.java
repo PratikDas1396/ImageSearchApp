@@ -1,6 +1,8 @@
 package com.imagesearch.app.Adaptor;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +11,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.Models.Images;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +51,19 @@ public class SearchViewAdaptor extends RecyclerView.Adapter<SearchViewAdaptor.Se
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         Images img = this.filteredDataList.get(position);
         try {
-            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
+            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.loading_icon_shape);
             Glide.with(context)
                     .load(img.getFullPath())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .apply(requestOptions)
                     .into(holder.imageView);
 
             holder.imageView.setOnClickListener(v -> {
-                Toast.makeText(context, img.getName(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(img.getFullPath()), "image/*");
+                this.context.startActivity(intent);
             });
 
         } catch (Exception ex) {
