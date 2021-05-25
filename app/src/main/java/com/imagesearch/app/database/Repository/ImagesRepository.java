@@ -65,6 +65,13 @@ public class ImagesRepository {
         return images;
     }
 
+    public long GetDoneCount() {
+        Realm db = Realm.getDefaultInstance();
+        long count = db.where(Images.class).equalTo("isDetectionDone", 1).count();
+        db.close();
+        return count;
+    }
+
     public Images Get(int imageId) {
         Realm db = Realm.getDefaultInstance();
         Images images = db.where(Images.class).equalTo("Id", imageId).findFirst();

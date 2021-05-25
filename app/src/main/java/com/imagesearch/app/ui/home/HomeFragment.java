@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.imagesearch.app.Adaptor.TopLabelViewAdaptor;
 import com.imagesearch.app.AsyncTask.AppStartupAsyncTask;
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment {
     private LabelRepository labelRepository;
     FragmentHomeBinding binding;
     Dialog loadingDialog;
-    TextView textView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,8 +57,6 @@ public class HomeFragment extends Fragment {
         topLabelRecycleView.setLayoutManager(layoutManager);
 
         loadingDialog = CustomDialog.getLoadingDialog(activity);
-        textView = loadingDialog.findViewById(R.id.loading_text);
-        textView.setText("Getting Images to read..");
 
         if (AppPermission.checkAppPermissionsGranted(this.context)) {
             appStart();
@@ -68,6 +67,16 @@ public class HomeFragment extends Fragment {
                 AppPermission.requestAppPermission(HomeFragment.this, this.context, this.READ_FILE_PERMISSION_CODE);
             }
         }
+
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                appStart();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return root;
     }
 
