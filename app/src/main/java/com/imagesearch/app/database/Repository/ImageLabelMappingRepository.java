@@ -12,7 +12,6 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class ImageLabelMappingRepository {
-
     private int TopLabels = 10;
     private int NoOfImages = 10;
 
@@ -113,10 +112,16 @@ public class ImageLabelMappingRepository {
         return images;
     }
 
-
     public long GetImageCountByLabel(String LabelName) {
         Realm db = Realm.getDefaultInstance();
         long count = db.where(ImageLabelMapping.class).equalTo("LabelName", LabelName).count();
+        db.close();
+        return count;
+    }
+
+    public long count() {
+        Realm db = Realm.getDefaultInstance();
+        long count = db.where(ImageLabelMapping.class).count();
         db.close();
         return count;
     }

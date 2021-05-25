@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.imagesearch.app.Adaptor.TopLabelViewAdaptor;
+import com.imagesearch.app.AsyncTask.AppStartupAsyncTask;
 import com.imagesearch.app.CommonClass.AppPermission;
 import com.imagesearch.app.CommonClass.CustomDialog;
 import com.imagesearch.app.R;
-import com.imagesearch.app.database.DatabaseInitializer;
 import com.imagesearch.app.database.Models.LabelImageDataModel;
 import com.imagesearch.app.database.Repository.ImageLabelMappingRepository;
 import com.imagesearch.app.database.Repository.LabelRepository;
@@ -41,7 +42,9 @@ public class HomeFragment extends Fragment {
     private ImageLabelMappingRepository mappingRepository;
     private LabelRepository labelRepository;
     FragmentHomeBinding binding;
-    DatabaseInitializer db;
+    Dialog loadingDialog;
+    TextView textView;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
@@ -51,6 +54,10 @@ public class HomeFragment extends Fragment {
         topLabelRecycleView = root.findViewById(R.id.topLableRecycleView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         topLabelRecycleView.setLayoutManager(layoutManager);
+
+        loadingDialog = CustomDialog.getLoadingDialog(activity);
+        textView = loadingDialog.findViewById(R.id.loading_text);
+        textView.setText("Getting Images to read..");
 
         if (AppPermission.checkAppPermissionsGranted(this.context)) {
             appStart();
@@ -69,7 +76,9 @@ public class HomeFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case READ_FILE_PERMISSION_CODE: {
-                if (grantResults.length > 0) {
+                if (grantResults[0] == 0) {
+                    AppStartupAsyncTask backgroundTask = new AppStartupAsyncTask(activity, loadingDialog);
+                    backgroundTask.run();
                     appStart();
                 } else {
                     showDialog();
@@ -93,6 +102,7 @@ public class HomeFragment extends Fragment {
     private void appStart() {
         labelRepository = new LabelRepository();
         mappingRepository = new ImageLabelMappingRepository();
+
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
@@ -113,7 +123,7 @@ public class HomeFragment extends Fragment {
         Button btnOk = (Button) dialog.findViewById(R.id.btnGrantPermission);
         btnOk.setOnClickListener(v -> {
             dialog.dismiss();
-            AppPermission.requestAppPermission(activity, READ_FILE_PERMISSION_CODE);
+            AppPermission.requestAppPermission(HomeFragment.this, this.context, this.READ_FILE_PERMISSION_CODE);
         });
         dialog.show();
     }

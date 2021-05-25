@@ -67,23 +67,12 @@ public class AppStartupAsyncTask {
                 detection.detect(images.get(i));
                 try {
                     List<ImageLabelMapping> mapping = new ImageLabelMappingRepository().Get(images.get(i).getId());
-                    List<Label> new_labels = new ArrayList<Label>();
 
                     String[] map = new String[mapping.size()];
                     List<Object> object = Arrays.asList(mapping.stream().map(imageLabelMapping -> imageLabelMapping.getLabelName()).toArray());
                     object.toArray(map);
 
                     new LabelRepository().UpdateCount(map);
-
-//                    for (int j = 0; j < mapping.size(); j++) {
-//                        ImageLabelMapping map = mapping.get(i);
-//                        Label label = new LabelRepository().Get(map.getLabelName());
-//                        label.setCount(label.getCount() + 1);
-//                        new_labels.add(label);
-//                    }
-//                    new LabelRepository().UpdateImageCount(new_labels);
-
-
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
