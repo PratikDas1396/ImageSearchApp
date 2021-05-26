@@ -14,6 +14,7 @@ import com.imagesearch.app.database.Repository.LabelRepository;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -46,13 +47,7 @@ public class AppStartup {
         labelList = new ArrayList<Label>();
         ImageList = new ArrayList<Images>();
 
-//            if() {
-//
-//            }else {
-                ExternalStoragePath = Environment.getExternalStorageDirectory().getPath();
-
-//            }
-
+        ExternalStoragePath = Environment.getExternalStorageDirectory().getPath();
     }
 
     private boolean isExternalStorageWritable() {
@@ -65,7 +60,7 @@ public class AppStartup {
                 Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY);
     }
 
-    public void run() {
+    public void run() throws IOException {
         long count = labelRepository.GetCount();
         if (count == 0) {
             setLabels();
@@ -78,15 +73,15 @@ public class AppStartup {
         }
     }
 
-    private void saveImageDetails() {
+    private void saveImageDetails() throws IOException {
         try {
             SaveImages(ExternalStoragePath);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw ex;
         }
     }
 
-    private void SaveImages(String directoryPath) {
+    private void SaveImages(String directoryPath) throws IOException {
         try {
             File[] files = new File(directoryPath).listFiles(new ImageFileFilter());
             for (File file : files) {
@@ -115,7 +110,7 @@ public class AppStartup {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw ex;
         }
     }
 
@@ -567,7 +562,7 @@ public class AppStartup {
 
             labelRepository.Add(labelList);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw ex;
         }
     }
 }

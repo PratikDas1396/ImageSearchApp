@@ -59,7 +59,7 @@ public class LabelRepository {
     public List<Label> Get() {
         Realm db = Realm.getDefaultInstance();
         List<Label> labels = new ArrayList<Label>();
-        RealmResults<Label> task = db.where(Label.class).findAll();
+        RealmResults<Label> task = db.where(Label.class).sort("LabelName").findAll();
         labels.addAll(db.copyFromRealm(task));
         db.close();
         return labels;

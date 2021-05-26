@@ -1,56 +1,65 @@
 package com.imagesearch.app.Adaptor;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.imagesearch.app.R;
 import com.imagesearch.app.database.Models.Label;
 
 import java.util.List;
 
-public class LabelAdaptor extends BaseAdapter {
+public class LabelAdaptor extends RecyclerView.Adapter<LabelAdaptor.LabelViewHolder> {
 
-    private Context context;
-    private List<Label> list;
+    private final Context context;
+    List<Label> data;
 
-    public LabelAdaptor(Context context, List<Label> list) {
+    public LabelAdaptor(Context context, List<Label> data) {
         this.context = context;
-        this.list = list;
+        this.data = data;
+    }
+
+    @NonNull
+    @Override
+    public LabelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.label_adaptor_view, parent, false);
+
+        return new LabelAdaptor.LabelViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(@NonNull LabelViewHolder holder, int position) {
+        Label label = this.data.get(position);
         try {
-            final Label labels = (Label) this.getItem(position);
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.label_adaptor_view, null);
-                TextView txt =  convertView.findViewById(R.id.LabelID);
-                txt.setText(labels.toString());
-            }
+            holder.getTextView().setText(label.getLabelName().toUpperCase());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return convertView;
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.data.size();
+    }
+
+    public static class LabelViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView textView;
+
+        public LabelViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = (TextView) itemView.findViewById(R.id.labelTextView);
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
     }
 }

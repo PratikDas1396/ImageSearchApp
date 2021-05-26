@@ -28,13 +28,14 @@ public class AppStartupAsyncTask {
     TextView textView;
     boolean isFinished;
     int noOfImages;
+
     public AppStartupAsyncTask(Context context, Dialog progressBar) {
         this.progressBar = progressBar;
         this.context = context;
         this.appStartup = new AppStartup(context);
         textView = progressBar.findViewById(R.id.loading_text);
         isFinished = false;
-        noOfImages= 20;
+        noOfImages = 20;
     }
 
     public void run() {
@@ -42,9 +43,18 @@ public class AppStartupAsyncTask {
         Needle.onBackgroundThread().execute(new Runnable() {
             @Override
             public void run() {
-                appStartup.run();
-                //dismissLoader();
-                runDetection();
+                try {
+                    appStartup.run();
+                    runDetection();
+                } catch (Exception ex) {
+                    Needle.onMainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.dismiss();
+                            Toast.makeText(context, "Something went wrong!!!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -79,7 +89,7 @@ public class AppStartupAsyncTask {
             Needle.onMainThread().execute(new Runnable() {
                 @Override
                 public void run() {
-                    textView.setText("AI doing its work!!, please wait..");
+                    textView.setText("AI doing its work!! \n Please wait..");
                 }
             });
         }

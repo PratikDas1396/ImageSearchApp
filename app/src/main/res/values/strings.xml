@@ -8,7 +8,7 @@
     <string name="action_labels">Label</string>
     <string name="action_images">Images</string>
     <string name="action_mapping">ImageLabelMapping</string>
-    <string name="title_activity_label">LabelActivity</string>
+    <string name="title_activity_label">Lists of Keywords</string>
     <!-- Strings used for fragments for navigation -->
 
     <string name="title_activity_splash_screen"></string>
@@ -23,7 +23,8 @@
     <string name="info_Header">Developed By</string>
     <string name="dev_name">Mr. Pratik Krishna Das</string>
     <string name="col_name">S.K. Somaiya College of Art, Science and Commerce</string>
-
+    <string name="keywords">Keywords</string>
+    <string name="about_us">About us</string>
 
 
 </resources>

@@ -100,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "this is about us", Toast.LENGTH_SHORT).show();
                 break;
             }
+            case R.id.action_Labels: {
+                Intent intent = new Intent(this, LabelActivity.class);
+                startActivity(intent);
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }

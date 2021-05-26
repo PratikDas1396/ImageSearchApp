@@ -40,21 +40,7 @@ public class TopLabelViewAdaptor extends RecyclerView.Adapter<TopLabelViewAdapto
     public void onBindViewHolder(@NonNull TopLabelViewHolder holder, int position) {
         LabelImageDataModel image_data = this.data.get(position);
         try {
-            //SearchItemAnimation.animateFadeIn(holder.itemView, position);
             holder.getLabelView().setText(image_data.getLabelName());
-            holder.getButtonView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-//                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
-//                    Fragment searchFragment = new SearchFragment();
-//                    activity.getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.nav_host_fragment, searchFragment)
-//                            .addToBackStack(null)
-//                            .commit();
-                }
-            });
             setChildRecycleView(holder.getRecyclerView(), image_data.getImages());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -91,7 +77,7 @@ public class TopLabelViewAdaptor extends RecyclerView.Adapter<TopLabelViewAdapto
         }
     }
 
-    private void setChildRecycleView(RecyclerView recycleView, List<ImageLabelMapping> data){
+    private void setChildRecycleView(RecyclerView recycleView, List<ImageLabelMapping> data) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         recycleView.setLayoutManager(layoutManager);
         recycleView.setAdapter(new TopLabelRowItemAdaptor(context, data));
